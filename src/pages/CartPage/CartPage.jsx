@@ -23,7 +23,7 @@ const CartPage = () => {
           {items.map((item) => (
             <li key={item.id}>
               {item.name || item.productId} - {item.quantity}
-              <button onClick={() => dispatch(removeCartItem(item.id))}>Eliminar</button>
+              <button onClick={() => dispatch(removeCartItem(item.productId))}>Eliminar</button>
             </li>
           ))}
         </ul>

@@ -80,7 +80,7 @@ const cartSlice = createSlice({
        state.items = action.payload.data;
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
-        state.items = state.items.filter((item) => item.id !== action.payload);
+        state.items = state.items.filter((item) => item.productId !== action.payload);
       })
       .addCase(checkout.fulfilled, (state) => {
         state.items = [];
