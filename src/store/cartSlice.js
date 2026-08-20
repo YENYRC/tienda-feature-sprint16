@@ -60,8 +60,16 @@ const cartSlice = createSlice({
     items: [],
     loading: false,
     error: null,
+    checkoutLoading: false,
+    checkoutSuccess: false,
+    checkoutError: null,
   },
-  reducers: {},
+  reducers: {
+    clearCheckoutStatus: (state) => {
+      state.checkoutSuccess = false;
+      state.checkoutError = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.pending, (state) => {
@@ -77,15 +85,27 @@ const cartSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(addCartItem.fulfilled, (state, action) => {
-       state.items = action.payload.data;
+        state.items = action.payload.data;
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.productId !== action.payload);
       })
+      .addCase(checkout.pending, (state) => {
+        state.checkoutLoading = true;
+        state.checkoutSuccess = false;
+        state.checkoutError = null;
+      })
       .addCase(checkout.fulfilled, (state) => {
+        state.checkoutLoading = false;
+        state.checkoutSuccess = true;
         state.items = [];
+      })
+      .addCase(checkout.rejected, (state, action) => {
+        state.checkoutLoading = false;
+        state.checkoutError = action.payload;
       });
   },
 });
 
+export const { clearCheckoutStatus } = cartSlice.actions;
 export default cartSlice.reducer;
