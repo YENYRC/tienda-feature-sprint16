@@ -1,9 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../store/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { logoutThunk } from '../../store/authSlice';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
+
+  const handleLogout = async () => {
+    await dispatch(logoutThunk());
+    navigate('/login');
+  };
 
   return (
     <div>
@@ -13,7 +20,7 @@ const ProfilePage = () => {
       ) : (
         <p>Sesión iniciada.</p>
       )}
-      <button onClick={() => dispatch(logout())}>Cerrar sesión</button>
+      <button onClick={handleLogout}>Cerrar sesión</button>
     </div>
   );
 };

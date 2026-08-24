@@ -8,7 +8,12 @@ import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import CartPage from '../pages/CartPage/CartPage';
 import WishlistPage from '../pages/WishlistPage/WishlistPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
+import AdminPage from '../pages/AdminPage/AdminPage';
+import AdminProductsPage from '../pages/AdminProductsPage/AdminProductsPage';
+import AdminProductFormPage from '../pages/AdminProductFormPage/AdminProductFormPage';
+import CheckoutSuccessPage from '../pages/CheckoutSuccessPage/CheckoutSuccessPage';
 import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
+import AdminRoute from '../components/AdminRoute/AdminRoute';
 
 function AppRouter() {
   return (
@@ -40,6 +45,46 @@ function AppRouter() {
           <PrivateRoute>
             <ProfilePage />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="/checkout/success"
+        element={
+          <PrivateRoute>
+            <CheckoutSuccessPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/products"
+        element={
+          <AdminRoute>
+            <AdminProductsPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/products/new"
+        element={
+          <AdminRoute>
+            <AdminProductFormPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/products/:id/edit"
+        element={
+          <AdminRoute>
+            <AdminProductFormPage />
+          </AdminRoute>
         }
       />
       <Route path="*" element={<NotFoundPage />} />

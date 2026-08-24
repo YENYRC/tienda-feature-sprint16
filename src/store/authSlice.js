@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { login as loginApi, register as registerApi } from '../api/auth';
+import {
+  login as loginApi,
+  register as registerApi,
+  logout as logoutApi,
+  me as meApi,
+} from '../api/auth';
 
 export const loginThunk = createAsyncThunk(
   'auth/login',
@@ -25,21 +30,31 @@ export const registerThunk = createAsyncThunk(
   }
 );
 
+export const logoutThunk = createAsyncThunk('auth/logout', async () => {
+  await logoutApi();
+});
+
+export const meThunk = createAsyncThunk(
+  'auth/me',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await meApi();
+      return response;
+    } catch (error) {
+      return rejectWithValue(null);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    token: localStorage.getItem('token') || null,
     user: null,
     loading: false,
+    checkingSession: true,
     error: null,
   },
-  reducers: {
-    logout: (state) => {
-      state.token = null;
-      state.user = null;
-      localStorage.removeItem('token');
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(loginThunk.pending, (state) => {
@@ -48,9 +63,7 @@ const authSlice = createSlice({
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload.data.token;
         state.user = action.payload.data.user || null;
-        localStorage.setItem('token', action.payload.data.token);
       })
       .addCase(loginThunk.rejected, (state, action) => {
         state.loading = false;
@@ -58,16 +71,31 @@ const authSlice = createSlice({
       })
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload.data.token;
         state.user = action.payload.data.user || null;
-        localStorage.setItem('token', action.payload.data.token);
-      }) 
+      })
       .addCase(registerThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logoutThunk.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(meThunk.pending, (state) => {
+        state.checkingSession = true;
+      })
+      .addCase(meThunk.fulfilled, (state, action) => {
+        state.checkingSession = false;
+        state.user = action.payload.data.user || null;
+      })
+      .addCase(meThunk.rejected, (state) => {
+        state.checkingSession = false;
+        state.user = null;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
+export const selectIsAdmin = (state) => {
+  return state.auth.user?.role === 'ADMIN';
+};
+
 export default authSlice.reducer;

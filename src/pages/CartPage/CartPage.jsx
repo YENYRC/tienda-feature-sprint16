@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCart, removeCartItem, checkout } from '../../store/cartSlice';
+import { createCheckoutSession } from '../../api/checkout';
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const { items, loading, error, checkoutSuccess } = useSelector((state) => state.cart);
+  const [stripeLoading, setStripeLoading] = useState(false);
+  const [stripeError, setStripeError] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCart());
@@ -23,16 +26,27 @@ const CartPage = () => {
     dispatch(checkout());
   };
 
+  const handleStripeCheckout = async () => {
+    setStripeLoading(true);
+    setStripeError(null);
+    try {
+      const result = await createCheckoutSession();
+      window.location.href = result.data.url;
+    } catch (err) {
+      setStripeError('Error al iniciar el pago');
+      setStripeLoading(false);
+    }
+  };
+
   return (
     <div>
       <h1>Mi carrito</h1>
-
       {checkoutSuccess && (
         <p style={{ color: 'lightgreen' }}>
           ¡Compra realizada con éxito! Gracias por tu pedido.
         </p>
       )}
-
+      {stripeError && <p style={{ color: 'salmon' }}>{stripeError}</p>}
       {items.length === 0 ? (
         <>
           <p>Tu carrito está vacío.</p>
@@ -49,7 +63,11 @@ const CartPage = () => {
             ))}
           </ul>
           <p><strong>Total: {total.toFixed(2)}€</strong></p>
-          <button onClick={handleCheckout}>Finalizar compra</button>
+          <button onClick={handleStripeCheckout} disabled={stripeLoading}>
+            {stripeLoading ? 'Redirigiendo a Stripe...' : 'Pagar con tarjeta'}
+          </button>
+          {' '}
+          <button onClick={handleCheckout}>Finalizar compra (sin pago)</button>
           <br />
           <Link to="/products" style={{ color: "#FFD700" }}>Seguir comprando</Link>
         </>

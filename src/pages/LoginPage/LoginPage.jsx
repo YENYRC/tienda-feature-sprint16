@@ -10,17 +10,17 @@ function LoginPage() {
   const emailInputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, token } = useSelector((state) => state.auth);
+  const { loading, error, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     emailInputRef.current.focus();
   }, []);
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       navigate('/');
     }
-  }, [token, navigate]);
+  }, [user, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
