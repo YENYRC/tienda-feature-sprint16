@@ -14,14 +14,37 @@ const Navbar = () => {
   };
 
   const linkStyle = ({ isActive }) => ({
-    marginRight: '1rem',
-    fontWeight: isActive ? 'bold' : 'normal',
-    color: isActive ? '#FFD700' : '#D9B3FF',
+    marginRight: '1.5rem',
+    fontWeight: isActive ? 600 : 500,
+    color: isActive ? '#5c7a61' : '#6b7268',
     textDecoration: 'none',
+    fontSize: '0.95rem',
+    letterSpacing: '0.02em',
+    transition: 'color 0.2s',
   });
 
+  const buttonStyle = {
+    padding: '0.5rem 1.1rem',
+    fontSize: '0.9rem',
+    fontWeight: 500,
+    color: '#2d2d2d',
+    background: 'transparent',
+    border: '1px solid #8ca891',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    transition: 'background 0.2s, color 0.2s',
+  };
+
   return (
-    <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
+    <nav
+      style={{
+        padding: '1.2rem 2rem',
+        borderBottom: '1px solid #e8e2d9',
+        display: 'flex',
+        alignItems: 'center',
+        background: '#ffffff',
+      }}
+    >
       <NavLink to="/" style={linkStyle}>Inicio</NavLink>
       <NavLink to="/products" style={linkStyle}>Productos</NavLink>
       {user && (
@@ -35,9 +58,24 @@ const Navbar = () => {
         <NavLink to="/admin" style={linkStyle}>Admin</NavLink>
       )}
       {user ? (
-        <button onClick={handleLogout}>Cerrar sesión</button>
+        <button
+          onClick={handleLogout}
+          style={{ ...buttonStyle, marginLeft: 'auto' }}
+          onMouseEnter={(e) => {
+            e.target.style.background = '#8ca891';
+            e.target.style.color = '#ffffff';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'transparent';
+            e.target.style.color = '#2d2d2d';
+          }}
+        >
+          Cerrar sesión
+        </button>
       ) : (
-        <NavLink to="/login" style={linkStyle}>Iniciar sesión</NavLink>
+        <NavLink to="/login" style={{ ...linkStyle({ isActive: false }), marginLeft: 'auto' }}>
+          Iniciar sesión
+        </NavLink>
       )}
     </nav>
   );
