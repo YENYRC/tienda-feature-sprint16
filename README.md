@@ -1,4 +1,4 @@
-# TelePan Store — Frontend
+# Proyecto3-Yeny — Frontend
 
 E-commerce completo desarrollado con React + Redux Toolkit, como parte del Bootcamp Full Stack Developer + IA (The Bridge). Incluye catálogo de productos, carrito, wishlist, panel de administración con CRUD, autenticación segura con cookies httpOnly, subida de imágenes a Cloudinary y pagos con Stripe.
 
@@ -25,7 +25,7 @@ E-commerce completo desarrollado con React + Redux Toolkit, como parte del Bootc
 Clona el repositorio e instala las dependencias:
 
 \`\`\`bash
-git clone <URL_DE_ESTE_REPO>
+git clone https://github.com/YENYRC/tienda-feature-sprint16.git
 cd tienda-feature-sprint16
 npm install
 \`\`\`
@@ -51,8 +51,8 @@ npm run preview   # Sirve la build de producción localmente
 ## Backend
 
 Este frontend consume la API disponible en el siguiente repositorio:
-\`<URL_DEL_REPO_BACKEND>\`
+\`https://github.com/YENYRC/segundo-proyecto-backend.git\`
 
 ## Despliegue
 
-Aplicación desplegada en Netlify: \`<URL_DE_NETLIFY>\`
+Aplicación desplegada en Netlify: \`https://bejewelled-pasca-ba51ab.netlify.app\`

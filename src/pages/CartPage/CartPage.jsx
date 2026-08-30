@@ -17,7 +17,7 @@ const CartPage = () => {
   if (loading) return <p>Cargando carrito...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const total = items.reduce(
+  const total = (items || []).reduce(
     (acc, item) => acc + (item.product?.price || 0) * item.quantity,
     0
   );

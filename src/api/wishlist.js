@@ -6,6 +6,6 @@ export const getWishlist = async () => {
 };
 
 export const toggleWishlist = async (productId) => {
-  const response = await api.post('/api/wishlist', { productId });
+  const response = await api.post(`/api/wishlist/${productId}`);
   return response.data;
 };

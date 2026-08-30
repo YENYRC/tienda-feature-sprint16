@@ -78,14 +78,14 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload.data;
+        state.items = Array.isArray(action.payload.data) ? action.payload.data : state.items;
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
       .addCase(addCartItem.fulfilled, (state, action) => {
-        state.items = action.payload.data;
+         state.items = Array.isArray(action.payload.data) ? action.payload.data : [];
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.productId !== action.payload);

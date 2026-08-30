@@ -20,10 +20,10 @@ const WishlistPage = () => {
         <p>No tienes productos favoritos todavía.</p>
       ) : (
         <ul>
-          {productIds.map((id) => (
-            <li key={id}>
-              Producto #{id}
-              <button onClick={() => dispatch(toggleWishlist(id))}>Quitar</button>
+          {productIds.map((item) => (
+            <li key={item._id}>
+              Producto #{item.productId}
+              <button onClick={() => dispatch(toggleWishlist(item.productId))}>Quitar</button>
             </li>
           ))}
         </ul>

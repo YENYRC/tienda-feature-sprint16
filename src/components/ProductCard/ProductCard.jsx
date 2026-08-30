@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addCartItem } from '../../store/cartSlice';
 
@@ -14,8 +15,10 @@ function ProductCard({ product }) {
 
   return (
     <div className="product-card">
-      <img src={imageUrl} alt={product.name} className="product-card__image" />
-      <h3 className="product-card__name">{product.name}</h3>
+      <Link to={`/products/${product.id}`}>
+        <img src={imageUrl} alt={product.name} className="product-card__image" />
+        <h3 className="product-card__name">{product.name}</h3>
+      </Link>
       <p className="product-card__price">{product.price}€</p>
       <button onClick={handleAddToCart} className="product-card__add-btn">
         Añadir al carrito

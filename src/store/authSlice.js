@@ -4,6 +4,7 @@ import {
   register as registerApi,
   logout as logoutApi,
   me as meApi,
+  updateProfile as updateProfileApi,
 } from '../api/auth';
 
 export const loginThunk = createAsyncThunk(
@@ -46,6 +47,18 @@ export const meThunk = createAsyncThunk(
   }
 );
 
+export const updateProfileThunk = createAsyncThunk(
+  'auth/updateProfile',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await updateProfileApi(data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Error al actualizar el perfil');
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -79,6 +92,18 @@ const authSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(updateProfileThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfileThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data.user || null;
+      })
+      .addCase(updateProfileThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       .addCase(meThunk.pending, (state) => {
         state.checkingSession = true;
