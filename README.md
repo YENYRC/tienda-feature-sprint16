@@ -50,9 +50,8 @@ npm run preview   # Sirve la build de producción localmente
 
 ## Backend
 
-Este frontend consume la API disponible en el siguiente repositorio:
-\`https://github.com/YENYRC/segundo-proyecto-backend.git\`
+Este frontend consume la API disponible en el siguiente repositorio: https://github.com/YENYRC/segundo-proyecto-backend.git
 
 ## Despliegue
 
-Aplicación desplegada en Netlify: \`https://bejewelled-pasca-ba51ab.netlify.app\`
+Aplicación desplegada en Netlify: https://bejewelled-pasca-ba51ab.netlify.app
