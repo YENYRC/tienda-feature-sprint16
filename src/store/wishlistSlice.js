@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getWishlist, toggleWishlist as toggleWishlistApi } from '../api/wishlist';
+import {
+  getWishlist,
+  addWishlistItem,
+  removeWishlistItem,
+} from '../api/wishlist';
 
 export const fetchWishlist = createAsyncThunk(
   'wishlist/fetchWishlist',
@@ -13,14 +17,26 @@ export const fetchWishlist = createAsyncThunk(
   }
 );
 
-export const toggleWishlist = createAsyncThunk(
-  'wishlist/toggleWishlist',
+export const addToWishlist = createAsyncThunk(
+  'wishlist/addToWishlist',
   async (productId, { rejectWithValue }) => {
     try {
-      const response = await toggleWishlistApi(productId);
-      return response;
+      await addWishlistItem(productId);
+      return productId;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Error al actualizar la wishlist');
+      return rejectWithValue(error.response?.data?.message || 'Error al añadir a la wishlist');
+    }
+  }
+);
+
+export const removeFromWishlist = createAsyncThunk(
+  'wishlist/removeFromWishlist',
+  async (productId, { rejectWithValue }) => {
+    try {
+      await removeWishlistItem(productId);
+      return productId;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Error al eliminar de la wishlist');
     }
   }
 );
@@ -47,8 +63,10 @@ const wishlistSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(toggleWishlist.fulfilled, (state, action) => {
-       state.productIds = action.payload.data;
+      .addCase(removeFromWishlist.fulfilled, (state, action) => {
+        state.productIds = state.productIds.filter(
+          (item) => item.productId !== action.payload
+        );
       });
   },
 });

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useProduct } from '../../hooks/useProduct';
 import { useReviews } from '../../hooks/useReviews';
 import { addCartItem } from '../../store/cartSlice';
-import { toggleWishlist } from '../../store/wishlistSlice';
+import { addToWishlist, removeFromWishlist } from '../../store/wishlistSlice';
 
 function ProductDetailPage() {
   const { id } = useParams();
@@ -15,14 +15,18 @@ function ProductDetailPage() {
   if (loadingProduct) return <p>Cargando producto...</p>;
   if (errorProduct) return <p>Ha ocurrido un error al cargar el producto.</p>;
 
-  const isInWishlist = wishlistIds?.includes(id);
+  const isInWishlist = wishlistIds?.some((item) => item.productId === id);
 
   const handleAddToCart = () => {
     dispatch(addCartItem({ productId: id, quantity: 1 }));
   };
 
   const handleToggleWishlist = () => {
-    dispatch(toggleWishlist(id));
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(id));
+    } else {
+      dispatch(addToWishlist(id));
+    }
   };
 
   return (

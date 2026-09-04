@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWishlist, toggleWishlist } from '../../store/wishlistSlice';
+import { fetchWishlist, removeFromWishlist } from '../../store/wishlistSlice';
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const WishlistPage = () => {
           {productIds.map((item) => (
             <li key={item._id}>
               Producto #{item.productId}
-              <button onClick={() => dispatch(toggleWishlist(item.productId))}>Quitar</button>
+              <button onClick={() => dispatch(removeFromWishlist(item.productId))}>Quitar</button>
             </li>
           ))}
         </ul>
