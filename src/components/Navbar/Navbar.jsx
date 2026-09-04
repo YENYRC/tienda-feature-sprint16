@@ -1,12 +1,14 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk, selectIsAdmin } from '../../store/authSlice';
+import { selectCartCount } from '../../store/cartSlice';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const isAdmin = useSelector(selectIsAdmin);
+  const cartCount = useSelector(selectCartCount);
 
   const handleLogout = async () => {
     await dispatch(logoutThunk());
@@ -49,7 +51,25 @@ const Navbar = () => {
       <NavLink to="/products" style={linkStyle}>Productos</NavLink>
       {user && (
         <>
-          <NavLink to="/cart" style={linkStyle}>Carrito</NavLink>
+          <NavLink to="/cart" style={{ ...linkStyle({ isActive: false }), display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+            Carrito
+            <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>🛒</span>
+            {cartCount > 0 && (
+              <span
+                style={{
+                  background: '#8ca891',
+                  color: '#ffffff',
+                  borderRadius: '999px',
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  padding: '0.1rem 0.45rem',
+                  lineHeight: 1.4,
+                }}
+              >
+                {cartCount}
+              </span>
+            )}
+          </NavLink>
           <NavLink to="/wishlist" style={linkStyle}>Wishlist</NavLink>
           <NavLink to="/profile" style={linkStyle}>Perfil</NavLink>
         </>

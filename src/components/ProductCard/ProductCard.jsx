@@ -7,7 +7,7 @@ function ProductCard({ product }) {
 
   if (!product) return null;
 
-  const imageUrl = product.image || 'https://placehold.co/300x300?text=Sin+imagen';
+  const imageUrl = product.imageUrl || 'https://placehold.co/300x300?text=Sin+imagen';
 
   const handleAddToCart = () => {
     dispatch(addCartItem({ productId: product.id, quantity: 1 }));

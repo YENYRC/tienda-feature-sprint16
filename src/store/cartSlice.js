@@ -107,5 +107,8 @@ const cartSlice = createSlice({
   },
 });
 
+export const selectCartCount = (state) =>
+  state.cart.items.reduce((total, item) => total + (item.quantity || 1), 0);
+
 export const { clearCheckoutStatus } = cartSlice.actions;
 export default cartSlice.reducer;

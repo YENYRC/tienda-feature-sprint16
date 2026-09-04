@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useProducts } from '../../hooks/useProducts';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import './ProductsPage.css';
 
 function ProductsPage() {
   const { data, loading, error } = useProducts();
